@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>ツムツム効率計算（フルリファイン版）</title>
+  <title>ツムツム効率計算（サンプル＋使い方＋ポリシー）</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     body {
@@ -34,7 +34,7 @@
     }
     .tab-btn {
       border: none; background: none;
-      padding: 0.8em 2.2em;
+      padding: 0.8em 2em;
       font-size: 1em; font-weight:600;
       color: #789;
       background: #e3eaf5;
@@ -157,6 +157,10 @@
     .tsum-admin-table td button { color: #e53939; font-weight: bold;}
     .tsum-admin-table label {cursor:pointer;}
     .tsum-admin-table input[type=checkbox] { accent-color: #396bdb; }
+    .page-section {max-width:630px;margin:0 auto 1.5em auto;font-size:1.09em;line-height:1.95em;}
+    .page-section h2 {margin-top:0;font-size:1.2em; color:#2a45a3;}
+    .page-section ul {margin-left:1.3em;}
+    .contact-link {display:inline-block; background:#e3eaf5; color:#1e3b92; border-radius:7px; padding:0.1em 0.7em; margin-top:0.8em;}
     @media (max-width:600px){
       .container {padding:0.2em;}
       .row, .result-summary{flex-direction:column; gap:0.4em;}
@@ -164,6 +168,7 @@
       .card {padding:1.1em 0.5em;}
       .stopwatch {flex-direction:column;}
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
+      .page-section{font-size:1em;}
     }
   </style>
 </head>
@@ -174,6 +179,8 @@
       <button class="tab-btn active" onclick="showTab(0)">記録</button>
       <button class="tab-btn" onclick="showTab(2)">ランキング</button>
       <button class="tab-btn" onclick="showTab(1)">管理</button>
+      <button class="tab-btn" onclick="showTab(3)">使い方</button>
+      <button class="tab-btn" onclick="showTab(4)">プライバシーポリシー/お問い合わせ</button>
     </div>
 
     <!-- 記録タブ -->
@@ -243,6 +250,47 @@
       <div class="card">
         <h2 style="font-size:1.13em;">効率ランキング</h2>
         <div id="rankingArea" class="center"></div>
+      </div>
+    </div>
+
+    <!-- 使い方タブ -->
+    <div class="tab-content">
+      <div class="card page-section">
+        <h2>ツムツム効率計算ツールの使い方</h2>
+        <ul>
+          <li><b>管理</b>タブで、使いたいツムと基本アイテム設定を登録します。</li>
+          <li><b>記録</b>タブでツムを選択し、<b>スタート</b>→プレイ終了時に<b>ストップ</b>を押します。</li>
+          <li>コイン数や使ったアイテムにチェックし、<b>記録追加</b>を押します。</li>
+          <li>ツムごとに効率（1分/30分）や合計枚数を自動集計します。</li>
+          <li><b>ランキング</b>タブで各ツムの効率を一覧で比較できます。</li>
+          <li>管理タブからツムの編集・削除もできます。</li>
+        </ul>
+        <p>
+          <b>スマートフォンにも対応</b>しているので現場でも片手でご利用いただけます。<br>
+          <b>ご要望・不具合は「プライバシーポリシー/お問い合わせ」タブからご連絡ください。</b>
+        </p>
+      </div>
+    </div>
+
+    <!-- プライバシーポリシー・お問い合わせタブ -->
+    <div class="tab-content">
+      <div class="card page-section">
+        <h2>プライバシーポリシー</h2>
+        <ul>
+          <li>このサイトではGoogle AdSense等の広告を掲載する場合があります。広告配信にはCookie等を使用し、ユーザーのアクセス情報に基づいて広告が表示されます。</li>
+          <li>このサイトで登録した情報（ツム名・記録）は、ユーザーの端末内（ローカルストレージ）にのみ保存され、運営者に送信されることはありません。</li>
+          <li>利用者の個人情報を第三者に提供・公開することはありません。</li>
+        </ul>
+        <h2>免責事項</h2>
+        <ul>
+          <li>本ツールの利用によるいかなる損害も運営者は責任を負いません。</li>
+          <li>機能改善・仕様変更・サービス停止等を予告なく行う場合があります。</li>
+        </ul>
+        <h2>お問い合わせ</h2>
+        <p>
+          ご意見・ご要望・不具合報告は下記メールまでご連絡ください。<br>
+          <a class="contact-link" href="mailto:your-address@example.com?subject=ツムツム効率計算について">メールで連絡する</a>
+        </p>
       </div>
     </div>
   </div>
