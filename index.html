@@ -175,6 +175,7 @@
       .stopwatch {flex-direction:column;}
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
       .page-section{font-size:1em;}
+  　　 .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:normal;line-height:1.2em;}
     }
   </style>
 </head>
@@ -437,12 +438,21 @@
     function switchInputMode(mode) {
       const swRow = document.getElementById('stopwatchRow');
       const mRow = document.getElementById('manualRow');
+      const startBtn = document.getElementById('startBtn');
+      const stopBtn = document.getElementById('stopBtn');
+      const addBtn = document.getElementById('addBtn');
       if(mode === 'manual') {
         if(swRow) swRow.style.display = 'none';
         if(mRow) mRow.style.display = 'flex';
+        if(startBtn) startBtn.disabled = true;
+        if(stopBtn) stopBtn.disabled = true;
+        if(addBtn) addBtn.disabled = false;
       } else {
         if(swRow) swRow.style.display = 'flex';
         if(mRow) mRow.style.display = 'none';
+        if(startBtn) startBtn.disabled = false;
+        if(stopBtn) stopBtn.disabled = true;
+        if(addBtn) addBtn.disabled = true;
       }
     }
 
