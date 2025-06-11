@@ -342,6 +342,7 @@
 
     // ツム名と基本アイテム
     let tsumData = JSON.parse(localStorage.getItem('tsumData') || '[{"name":"ミッキー","time":false,"f54":false,"coin":false},{"name":"エルサ","time":false,"f54":true,"coin":false}]');
+    let selectedTsum = localStorage.getItem('selectedTsum') || "0";
     function saveTsums(){ localStorage.setItem('tsumData', JSON.stringify(tsumData)); }
     function renderTsumList() {
       if(tsumData.length === 0) {
@@ -373,6 +374,9 @@
       select.innerHTML = tsumData.length === 0
         ? '<option value="">--登録してください--</option>'
         : tsumData.map((t,i) => `<option value="${i}">${t.name}</option>`).join('');
+      if(!tsumData[selectedTsum]) selectedTsum = "0";
+      select.value = selectedTsum;
+      onSelectTsum();
     }
     function addTsum() {
       const val = document.getElementById('tsumInput').value.trim();
@@ -405,7 +409,9 @@
       renderTsumSelect();
     }
     function onSelectTsum() {
-      const idx = document.getElementById('tsumSelect').value;
+      selectedTsum = document.getElementById('tsumSelect').value;
+      localStorage.setItem('selectedTsum', selectedTsum);
+      const idx = selectedTsum;
       if(tsumData[idx]){
         document.getElementById('itemTime').checked = tsumData[idx].time;
         document.getElementById('item54').checked  = tsumData[idx].f54;
@@ -669,6 +675,7 @@
     // 初期描画
     renderTsumList();
     renderTsumSelect();
+    onSelectTsum();
     updateTable();
     switchInputMode('stopwatch');
   </script>
