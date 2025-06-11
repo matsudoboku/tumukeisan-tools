@@ -124,6 +124,17 @@
     .danger:active{background:#be2626;}
     .stopwatch { margin-bottom: 0.6em; gap: 0.55em; }
     .stopwatch .btn {min-width: 90px;}
+    .timer-display {
+      font-size: 1.2em;
+      letter-spacing: 0.06em;
+      border: 1px solid #a3b3d3;
+      background: #fff;
+      padding: 0.25em 0.5em;
+      border-radius: 6px;
+      min-width: 80px;
+      text-align: center;
+      display: inline-block;
+    }
     .play-list table, .ranking table, .tsum-admin-table {
       border-collapse: collapse;
       width: 100%;
@@ -215,9 +226,8 @@
           </label>
         </div>
         <div id="stopwatchRow" class="stopwatch row">
-          <button onclick="startPlay()" class="btn" id="startBtn">スタート</button>
-          <button onclick="stopPlay()" id="stopBtn" class="btn" disabled>ストップ</button>
-          <span id="timer" style="font-size:1.09em;letter-spacing:0.06em;">00:00.0</span>
+          <button id="toggleBtn" class="btn" onclick="togglePlay()">スタート</button>
+          <span id="timer" class="timer-display">00:00.0</span>
         </div>
         <div id="manualRow" class="row" style="display:none;">
           <label>分:
@@ -447,20 +457,17 @@
     function switchInputMode(mode) {
       const swRow = document.getElementById('stopwatchRow');
       const mRow = document.getElementById('manualRow');
-      const startBtn = document.getElementById('startBtn');
-      const stopBtn = document.getElementById('stopBtn');
+      const toggleBtn = document.getElementById('toggleBtn');
       const addBtn = document.getElementById('addBtn');
       if(mode === 'manual') {
         if(swRow) swRow.style.display = 'none';
         if(mRow) mRow.style.display = 'flex';
-        if(startBtn) startBtn.disabled = true;
-        if(stopBtn) stopBtn.disabled = true;
+        if(toggleBtn) toggleBtn.disabled = true;
         if(addBtn) addBtn.disabled = false;
       } else {
         if(swRow) swRow.style.display = 'flex';
         if(mRow) mRow.style.display = 'none';
-        if(startBtn) startBtn.disabled = false;
-        if(stopBtn) stopBtn.disabled = true;
+        if(toggleBtn) toggleBtn.disabled = false;
         if(addBtn) addBtn.disabled = true;
       }
     }
@@ -482,33 +489,33 @@
       return `${m}分${s}秒`;
     }
 
-    function startPlay() {
-      if(tsumData.length === 0){
-        alert('ツム名を登録してください');
-        return;
-      }
-      document.getElementById('stopBtn').disabled = false;
-      document.getElementById('addBtn').disabled = true;
-      document.getElementById('startBtn').disabled = true;
-      startTime = Date.now();
-      elapsed = 0;
-      timerRunning = true;
-      document.getElementById('timer').textContent = "00:00.0";
-      if(timerInterval) clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        if(timerRunning){
-          elapsed = Date.now() - startTime;
-          document.getElementById('timer').textContent = formatTime(elapsed);
+    function togglePlay() {
+      const btn = document.getElementById('toggleBtn');
+      const addBtn = document.getElementById('addBtn');
+      if(!timerRunning) {
+        if(tsumData.length === 0){
+          alert('ツム名を登録してください');
+          return;
         }
-      }, 100);
-    }
-
-    function stopPlay() {
-      timerRunning = false;
-      clearInterval(timerInterval);
-      document.getElementById('stopBtn').disabled = true;
-      document.getElementById('addBtn').disabled = false;
-      document.getElementById('startBtn').disabled = false;
+        addBtn.disabled = true;
+        btn.textContent = 'ストップ';
+        startTime = Date.now();
+        elapsed = 0;
+        timerRunning = true;
+        document.getElementById('timer').textContent = "00:00.0";
+        if(timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          if(timerRunning){
+            elapsed = Date.now() - startTime;
+            document.getElementById('timer').textContent = formatTime(elapsed);
+          }
+        }, 100);
+      } else {
+        timerRunning = false;
+        clearInterval(timerInterval);
+        btn.textContent = 'スタート';
+        addBtn.disabled = false;
+      }
     }
 
     function addPlay() {
@@ -538,7 +545,8 @@
       document.getElementById('itemTime').checked = tsumData[tsumIdx].time;
       document.getElementById('item54').checked  = tsumData[tsumIdx].f54;
       document.getElementById('itemCoin').checked= tsumData[tsumIdx].coin;
-      document.getElementById('startBtn').disabled = false;
+      document.getElementById('toggleBtn').textContent = 'スタート';
+      document.getElementById('toggleBtn').disabled = false;
     }
 
     function deletePlay(i){
