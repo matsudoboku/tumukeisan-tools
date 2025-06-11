@@ -24,13 +24,16 @@
       padding: 2em 0 3em 0;
     }
     .tabs {
-      display: flex; 
-      justify-content: center;
+      display: flex;
+      justify-content: flex-start;
       background: #e3eaf5;
       border-radius: 18px 18px 0 0;
       margin-bottom: 0.7em;
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
       box-shadow: 0 2px 6px #0001;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
     }
     .tab-btn {
       border: none; background: none;
@@ -112,6 +115,9 @@
       white-space: nowrap;
       min-width: 86px;
       text-align:center;
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
     }
     button:active, .btn:active { transform: scale(0.98);}
     .danger {background: #e53939;}
@@ -200,7 +206,13 @@
           <button onclick="startPlay()" class="btn" id="startBtn">スタート</button>
           <button onclick="stopPlay()" id="stopBtn" class="btn" disabled>ストップ</button>
           <span id="timer" style="font-size:1.09em;letter-spacing:0.06em;">00:00.0</span>
-          <label>今回コイン数: 
+          <label>分:
+            <input type="number" id="manualMin" value="" min="0" style="width:60px;">
+          </label>
+          <label>秒:
+            <input type="number" id="manualSec" value="" min="0" max="59" style="width:60px;">
+          </label>
+          <label>今回コイン数:
             <input type="number" id="coinInput" value="0" min="0" style="width:80px;">
           </label>
           <span class="items">
@@ -216,7 +228,7 @@
               <tr>
                 <th>#</th><th>ツム</th><th>コイン数</th>
                 <th>タイム</th><th>5→4</th><th>コイン</th>
-                <th>プレイ時間（秒）</th><th>削除</th>
+                <th>プレイ時間</th><th>削除</th>
               </tr>
             </thead>
             <tbody id="plays"></tbody>
@@ -421,6 +433,12 @@
       return `${String(m).padStart(2,0)}:${String(sec).padStart(2,0)}.${ms1}`;
     }
 
+    function formatMinSec(sec){
+      const m = Math.floor(sec/60);
+      const s = Math.round(sec%60);
+      return `${m}分${s}秒`;
+    }
+
     function startPlay() {
       if(tsumData.length === 0){
         alert('ツム名を登録してください');
@@ -455,7 +473,14 @@
       if(tsumIdx==="" || !tsumData[tsumIdx]){ alert('ツムを選択してください'); return; }
       const tsum = tsumData[tsumIdx].name;
       const coins = Number(document.getElementById('coinInput').value);
-      const playSec = elapsed / 1000;
+      const manualMin = Number(document.getElementById('manualMin').value);
+      const manualSec = Number(document.getElementById('manualSec').value);
+      let playSec = elapsed / 1000;
+      if(!isNaN(manualMin) || !isNaN(manualSec)){
+        if(manualMin || manualSec){
+          playSec = (manualMin||0)*60 + (manualSec||0);
+        }
+      }
       const timeUsed = document.getElementById('itemTime').checked;
       const used54 = document.getElementById('item54').checked;
       const usedCoin = document.getElementById('itemCoin').checked;
@@ -464,6 +489,8 @@
       updateTable();
       document.getElementById('addBtn').disabled = true;
       document.getElementById('timer').textContent = "00:00.0";
+      document.getElementById('manualMin').value = "";
+      document.getElementById('manualSec').value = "";
       document.getElementById('coinInput').value = 0;
       document.getElementById('itemTime').checked = tsumData[tsumIdx].time;
       document.getElementById('item54').checked  = tsumData[tsumIdx].f54;
@@ -497,7 +524,7 @@
           <td>${p.timeUsed ? '✓' : ''}</td>
           <td>${p.used54 ? '✓' : ''}</td>
           <td>${p.usedCoin ? '✓' : ''}</td>
-          <td>${p.playSec.toFixed(1)}</td>
+          <td>${formatMinSec(p.playSec)}</td>
           <td><button onclick="deletePlay(${plays.indexOf(p)})" style="color:#e53939;font-weight:bold;">×</button></td>
         </tr>`;
       });
@@ -539,7 +566,7 @@
         `<span><b>総コイン:</b> ${sumCoins.toLocaleString()}枚</span>
          <span><b>倍率後:</b> ${bonusCoins.toLocaleString()}枚</span>
          <span><b>アイテムコスト:</b> -${itemCost.toLocaleString()}枚</span>
-         <span><b>プレイ時間:</b> ${totalMin.toFixed(1)}分</span>
+         <span><b>プレイ時間:</b> ${formatMinSec(sumSec)}</span>
          <span><b>1分効率:</b> ${perMin.toFixed(1)}枚</span>
          <span><b>30分効率:</b> ${per30Min.toFixed(1)}枚</span>`;
     }
