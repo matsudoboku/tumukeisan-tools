@@ -134,6 +134,7 @@
       border: 1.2px solid #a3b3d3;
       box-shadow: 0 1.5px 8px #1839aa18;
     }
+    .ranking table{table-layout:fixed;}
     .play-list th, .play-list td,
     .ranking th, .ranking td,
     .tsum-admin-table th, .tsum-admin-table td {
@@ -174,7 +175,9 @@
       .card {padding:1.1em 0.5em;}
       .stopwatch {flex-direction:column;}
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
-      .page-section{font-size:1em;}
+      .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:nowrap;line-height:1.2em;}
+      .tabs button:last-child{min-width:160px;}
+      .ranking th, .ranking td{font-size:0.85em;min-width:auto;padding:0.35em 0.25em;}
   　　 .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:normal;line-height:1.2em;}
     }
   </style>
@@ -239,7 +242,7 @@
           <table>
             <thead>
               <tr>
-                <th>#</th><th>ツム</th><th>コイン数</th>
+                <th>コイン数</th>
                 <th>タイム</th><th>5→4</th><th>コイン</th>
                 <th>プレイ時間</th><th>削除</th>
               </tr>
@@ -552,8 +555,6 @@
       tbody.innerHTML = '';
       filtered.forEach((p,i) => {
         tbody.innerHTML += `<tr>
-          <td>${i+1}</td>
-          <td>${p.tsum}</td>
           <td>${p.coins}</td>
           <td>${p.timeUsed ? '✓' : ''}</td>
           <td>${p.used54 ? '✓' : ''}</td>
