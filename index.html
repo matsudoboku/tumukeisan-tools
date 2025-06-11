@@ -163,7 +163,7 @@
     .tsum-admin-table td button { color: #e53939; font-weight: bold;}
     .tsum-admin-table label {cursor:pointer;}
     .tsum-admin-table input[type=checkbox] { accent-color: #396bdb; }
-    .page-section {max-width:630px;margin:0 auto 1.5em auto;font-size:1.09em;line-height:1.95em;}
+    .page-section {max-width:630px;margin:0 auto 1.5em auto;font-size:1.09em;line-height:1.95em;overflow-wrap:anywhere;}
     .page-section h2 {margin-top:0;font-size:1.2em; color:#2a45a3;}
     .page-section ul {margin-left:1.3em;}
     .contact-link {display:inline-block; background:#e3eaf5; color:#1e3b92; border-radius:7px; padding:0.1em 0.7em; margin-top:0.8em;}
@@ -183,8 +183,8 @@
   <div class="container">
     <div class="tabs">
       <button class="tab-btn active" onclick="showTab(0)">記録</button>
-      <button class="tab-btn" onclick="showTab(2)">ランキング</button>
       <button class="tab-btn" onclick="showTab(1)">管理</button>
+      <button class="tab-btn" onclick="showTab(2)">ランキング</button>
       <button class="tab-btn" onclick="showTab(3)">使い方</button>
       <button class="tab-btn" onclick="showTab(4)">プライバシーポリシー/お問い合わせ</button>
     </div>
@@ -202,16 +202,28 @@
           <span id="playCountInfo" style="font-size:0.99em; color:#355;">（記録件数：<span id="playCount">0</span>）</span>
         </div>
         <div id="result" class="result-summary"></div>
-        <div class="stopwatch row">
+        <div class="row">
+          <label>入力方法:
+            <select id="inputMode" onchange="switchInputMode(this.value)" style="width:120px;">
+              <option value="stopwatch">ストップウォッチ</option>
+              <option value="manual">手入力</option>
+            </select>
+          </label>
+        </div>
+        <div id="stopwatchRow" class="stopwatch row">
           <button onclick="startPlay()" class="btn" id="startBtn">スタート</button>
           <button onclick="stopPlay()" id="stopBtn" class="btn" disabled>ストップ</button>
           <span id="timer" style="font-size:1.09em;letter-spacing:0.06em;">00:00.0</span>
+        </div>
+        <div id="manualRow" class="row" style="display:none;">
           <label>分:
             <input type="number" id="manualMin" value="" min="0" style="width:60px;">
           </label>
           <label>秒:
             <input type="number" id="manualSec" value="" min="0" max="59" style="width:60px;">
           </label>
+        </div>
+        <div class="row">
           <label>今回コイン数:
             <input type="number" id="coinInput" value="0" min="0" style="width:80px;">
           </label>
@@ -422,7 +434,19 @@
     let elapsed = 0;
     let timerRunning = false;
 
-    // プレイ記録
+    function switchInputMode(mode) {
+      const swRow = document.getElementById('stopwatchRow');
+      const mRow = document.getElementById('manualRow');
+      if(mode === 'manual') {
+        if(swRow) swRow.style.display = 'none';
+        if(mRow) mRow.style.display = 'flex';
+      } else {
+        if(swRow) swRow.style.display = 'flex';
+        if(mRow) mRow.style.display = 'none';
+      }
+    }
+
+　　　// プレイ記録
     const plays = loadPlays();
 
     function formatTime(ms) {
@@ -635,6 +659,7 @@
     renderTsumList();
     renderTsumSelect();
     updateTable();
+    switchInputMode('stopwatch');
   </script>
 </body>
 </html>
