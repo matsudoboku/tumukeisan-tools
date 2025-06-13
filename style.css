@@ -39,9 +39,10 @@
       transition: background 0.2s, color 0.2s;
       white-space:nowrap;
     }
-.tabs button:last-child,
-.tabs button:nth-last-child(2) { min-width: 200px; }
-    .tab-btn.active {
+.tabs button:nth-child(3) { min-width: 130px; }
+.tabs button:nth-child(4) { min-width: 170px; }.tabs button:nth-last-child(2) { min-width: 200px; }
+.tab-btn.active {
+.tabs button:last-child { min-width: 150px; }
       background: #fff;
       color: #1839aa;
       border-bottom: 2px solid #fff;
@@ -185,8 +186,10 @@
       .card {padding:1.1em 0.5em;}
       .stopwatch {flex-direction:column;}
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
-      .tabs button:last-child,
-      .tabs button:nth-last-child(2){min-width:200px;}
+      .tabs button:nth-child(3){min-width:130px;}
+      .tabs button:nth-child(4){min-width:170px;}      
+    　.tabs button:nth-last-child(2){min-width:200px;}
+    　.tabs button:last-child{min-width:150px;}
       .ranking th, .ranking td{font-size:0.85em;min-width:auto;padding:0.35em 0.25em;}
       .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:normal;line-height:1.2em;}
       .result-summary li{min-width:auto;}    }
