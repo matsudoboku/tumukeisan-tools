@@ -60,6 +60,8 @@
     }
     .row { display: flex; align-items: center; gap: 1em; margin-bottom:1em;}
     .row label { font-weight: 500;}
+    #recordHeader { flex-wrap: wrap; }
+    #playCountInfo { font-size: 0.99em; color: #355; margin-left: auto; }
     select, input[type="number"], input[type="text"] {
       padding: 0.45em 0.7em;
       border: 1px solid #c6cbe7;
@@ -172,8 +174,8 @@
     .result-summary li { min-width: 110px; }
     .ranking th, .ranking td { padding:0.3em 0.7em; }
     .center {text-align:center;}
-    .tsum-admin-table td button { color: #e53939; font-weight: bold;}
-    .tsum-admin-table label {cursor:pointer;}
+    .tsum-admin-table td .edit-btn { color: #fff; font-weight: bold; }
+    .tsum-admin-table td .delete-btn { color: #e53939; font-weight: bold; }    .tsum-admin-table label {cursor:pointer;}
     .tsum-admin-table input[type=checkbox] { accent-color: #396bdb; }
     .page-section {max-width:630px;margin:0 auto 1.5em auto;font-size:1.09em;line-height:1.95em;overflow-wrap:anywhere;}
     .page-section h2 {margin-top:0;font-size:1.2em; color:#2a45a3;}
@@ -185,6 +187,7 @@
       .play-list th, .play-list td, .ranking th, .ranking td {font-size:0.91em;}
       .card {padding:1.1em 0.5em;}
       .stopwatch {flex-direction:row;}
+      #playCountInfo { margin-left: 0; }
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
       .tabs button:nth-child(3){min-width:130px;}
       .tabs button:nth-child(4){min-width:170px;}      
