@@ -70,16 +70,15 @@ function renderTsumList(){
   if(!data.tsums.length) return;
   const table = document.createElement('table');
   table.className = 'tsum-admin-table';
-  table.innerHTML = '<thead><tr><th>ツム名</th><th>タイム</th><th>5→4</th><th>コイン</th><th>編集</th><th>削除</th></tr></thead>';
+  table.innerHTML = '<thead><tr><th>ツム名</th><th>タイム</th><th>5→4</th><th>コイン</th><th>削除</th></tr></thead>';
   const tbody = document.createElement('tbody');
   data.tsums.forEach((t,i)=>{
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${escapeHtml(t.name)}</td>
-      <td><input type="checkbox" ${t.defaults.time?'checked':''} disabled></td>
-      <td><input type="checkbox" ${t.defaults.item54?'checked':''} disabled></td>
-      <td><input type="checkbox" ${t.defaults.coin?'checked':''} disabled></td>
-      <td><button class="edit-btn" onclick="editTsum(${i})">編集</button></td>
+      <td><input type="checkbox" ${t.defaults.time?'checked':''} onchange="updateDefault(${i},'time',this.checked)"></td>
+      <td><input type="checkbox" ${t.defaults.item54?'checked':''} onchange="updateDefault(${i},'item54',this.checked)"></td>
+      <td><input type="checkbox" ${t.defaults.coin?'checked':''} onchange="updateDefault(${i},'coin',this.checked)"></td>
       <td><button class="delete-btn" onclick="deleteTsum(${i})">削除</button></td>
     `;
     tbody.appendChild(tr);
@@ -240,6 +239,17 @@ function deleteTsum(idx){
   }
   saveData();
   renderAll();
+}
+
+function updateDefault(idx, key, checked){
+  const tsum = data.tsums[idx];
+  tsum.defaults[key] = checked;
+  saveData();
+  if(idx === currentIndex){
+    $('itemTime').checked = tsum.defaults.time;
+    $('item54').checked = tsum.defaults.item54;
+    $('itemCoin').checked = tsum.defaults.coin;
+  }
 }
 
 function onSelectTsum(){
