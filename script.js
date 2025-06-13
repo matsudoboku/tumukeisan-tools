@@ -262,6 +262,7 @@ function onSelectTsum(){
 }
 
 function deletePlay(idx){
+  if(!confirm('削除しますか?')) return;
   const tsum = data.tsums[currentIndex];
   tsum.plays.splice(idx,1);
   saveData();
