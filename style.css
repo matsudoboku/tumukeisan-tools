@@ -163,8 +163,12 @@
       color: #222e52;
       font-weight: 600;
       box-shadow:0 2px 8px #1839aa18;
-      display: flex; flex-wrap: wrap; gap:1.1em;
+      display: flex;
+      flex-wrap: wrap;
+      gap:1.1em;
+      list-style: none;    }
     }
+    .result-summary li { min-width: 110px; }
     .ranking th, .ranking td { padding:0.3em 0.7em; }
     .center {text-align:center;}
     .tsum-admin-table td button { color: #e53939; font-weight: bold;}
@@ -181,9 +185,8 @@
       .card {padding:1.1em 0.5em;}
       .stopwatch {flex-direction:column;}
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
-      .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:nowrap;line-height:1.2em;}
       .tabs button:last-child,
       .tabs button:nth-last-child(2){min-width:200px;}
       .ranking th, .ranking td{font-size:0.85em;min-width:auto;padding:0.35em 0.25em;}
-  　　 .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:normal;line-height:1.2em;}
-    }
+      .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:normal;line-height:1.2em;}
+      .result-summary li{min-width:auto;}    }
