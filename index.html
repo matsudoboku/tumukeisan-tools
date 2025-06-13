@@ -112,8 +112,15 @@
     <!-- ランキングタブ -->
     <div class="tab-content">
       <div class="card">
-        <h2 style="font-size:1.13em;">効率ランキング</h2>
-        <div id="rankingArea" class="center"></div>
+        <h2 style="font-size:1.13em;">ランキング</h2>
+        <div class="row" style="justify-content:flex-end;">
+          <label>表示:
+            <select id="rankingType" onchange="renderRanking()" style="width:150px;">
+              <option value="efficiency">効率ランキング</option>
+              <option value="average">平均コインランキング</option>
+            </select>
+          </label>
+        </div>        <div id="rankingArea" class="center"></div>
       </div>
     </div>
 
