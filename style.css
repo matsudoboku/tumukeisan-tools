@@ -153,7 +153,9 @@
       font-size: 1em;
       min-width: 44px;
     }
-    .play-list th, .ranking th, .tsum-admin-table th {
+    .play-list td button{min-width:40px;padding:0.3em 0.6em;}
+    .play-list td:nth-child(1){white-space:nowrap;}
+　　.play-list th, .ranking th, .tsum-admin-table th {
       background: #e3eaf5;
       font-weight: 700;
     }
@@ -180,12 +182,13 @@
     .page-section h2 {margin-top:0;font-size:1.2em; color:#2a45a3;}
     .page-section ul {margin-left:1.3em;}
     .contact-link {display:inline-block; background:#e3eaf5; color:#1e3b92; border-radius:7px; padding:0.4em 1em; margin-top:0.8em;text-decoration:none;}
-    @media (max-width:600px){
+  @media (max-width:600px){
       .container {padding:0.2em;}
       .row, .result-summary{flex-direction:column; gap:0.4em;}
       .play-list th, .play-list td, .ranking th, .ranking td {font-size:0.91em;}
       .card {padding:1.1em 0.5em;}
       .stopwatch {flex-direction:row;}
+    　#manualRow{flex-direction:row;}
       #playCountInfo { margin-left: 0; }
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
       .tabs button:nth-child(3){min-width:130px;}
