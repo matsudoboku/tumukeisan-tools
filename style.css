@@ -184,12 +184,12 @@
       .row, .result-summary{flex-direction:column; gap:0.4em;}
       .play-list th, .play-list td, .ranking th, .ranking td {font-size:0.91em;}
       .card {padding:1.1em 0.5em;}
-      .stopwatch {flex-direction:column;}
+      .stopwatch {flex-direction:row;}
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
       .tabs button:nth-child(3){min-width:130px;}
       .tabs button:nth-child(4){min-width:170px;}      
-    　.tabs button:nth-last-child(2){min-width:200px;}
-    　.tabs button:last-child{min-width:150px;}
+      .tabs button:nth-last-child(2){min-width:200px;}
+      .tabs button:last-child{min-width:150px;}
       .ranking th, .ranking td{font-size:0.85em;min-width:auto;padding:0.35em 0.25em;}
-      .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:normal;line-height:1.2em;}
+      .tab-btn{padding:0.6em 1em;font-size:0.9em;white-space:nowrap;line-height:1.2em;}      .result-summary li{min-width:auto;}    }
       .result-summary li{min-width:auto;}    }
