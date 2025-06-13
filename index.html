@@ -22,14 +22,14 @@
     <!-- 記録タブ -->
     <div class="tab-content active">
       <div class="card page-section">
-        <div class="row">
+        <div id="recordHeader" class="row">
           <label>+coinアイテム倍率:
             <input type="number" step="0.01" id="itemRate" value="1.3" style="width: 70px;">
           </label>
           <label>ツムを選択:
             <select id="tsumSelect" onchange="onSelectTsum()" style="width:120px;"></select>
           </label>
-          <span id="playCountInfo" style="font-size:0.99em; color:#355;">（記録件数：<span id="playCount">0</span>）</span>
+          <span id="playCountInfo">（記録件数：<span id="playCount">0</span>）</span>
         </div>
         <ul id="result" class="result-summary"></ul>
         <div id="inputRow" class="row">
