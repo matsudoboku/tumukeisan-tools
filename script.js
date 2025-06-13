@@ -124,14 +124,50 @@ function renderPlays(){
 }
 
 function updateResultSummary(){
-  const div = $('result');
-  if(currentIndex<0){ div.textContent=''; return; }
+  const list = $('result');
+  list.innerHTML = '';
+  if(currentIndex < 0) return;
   const tsum = data.tsums[currentIndex];
-  const {totalCoins, totalTime} = summarize(tsum.plays);
-  if(totalTime===0){ div.textContent=''; return; }
-  const perMin = totalCoins / (totalTime/60);
-  const per30 = perMin*30;
-  div.textContent = `合計 ${totalCoins}コイン / ${formatTime(totalTime)} (効率 ${perMin.toFixed(1)}/分, ${per30.toFixed(1)}/30分)`;
+  const count = tsum.plays.length;
+  const { totalCoins, totalTime } = summarize(tsum.plays);
+  if(count === 0 || totalTime === 0) return;
+
+  const avgTime = totalTime / count;
+  const perMin = totalCoins / (totalTime / 60);
+  const per30 = perMin * 30;
+  const perHour = perMin * 60;
+  const avgCoins = totalCoins / count;
+
+  const effRankList = data.tsums.map(t => {
+    const { totalCoins, totalTime } = summarize(t.plays);
+    const pm = totalTime ? totalCoins / (totalTime / 60) : 0;
+    return { tsum: t, perMin: pm };
+  }).sort((a,b) => b.perMin - a.perMin);
+  const effRank = effRankList.findIndex(r => r.tsum === tsum) + 1;
+
+  const avgCoinList = data.tsums.map(t => {
+    const { totalCoins } = summarize(t.plays);
+    const c = t.plays.length;
+    const avg = c ? totalCoins / c : 0;
+    return { tsum: t, avgCoins: avg };
+  }).sort((a,b) => b.avgCoins - a.avgCoins);
+  const coinRank = avgCoinList.findIndex(r => r.tsum === tsum) + 1;
+
+  const items = [
+    `記録数: ${count}`,
+    `平均時間: ${formatTime(avgTime)}`,
+    `平均コイン: ${avgCoins.toFixed(1)}`,
+    `効率(/分): ${perMin.toFixed(1)}`,
+    `効率(30分): ${per30.toFixed(1)}`,
+    `効率(/時): ${perHour.toFixed(1)}`,
+    `効率ランク: ${effRank}/${effRankList.length}`,
+    `平均コインランク: ${coinRank}/${avgCoinList.length}`
+  ];
+  items.forEach(text => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    list.appendChild(li);
+  });
 }
 
 function renderAll(){
