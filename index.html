@@ -21,7 +21,7 @@
 
     <!-- 記録タブ -->
     <div class="tab-content active">
-      <div class="card">
+      <div class="card page-section">
         <div class="row">
           <label>+coinアイテム倍率:
             <input type="number" step="0.01" id="itemRate" value="1.3" style="width: 70px;">
@@ -117,7 +117,7 @@
     <div class="tab-content">
       <div class="card">
         <h2 style="font-size:1.13em;">データのバックアップ</h2>
-        <div class="row">
+        <div class="row" style="justify-content:center;">
           <button onclick="exportBackup()" class="btn">バックアップをダウンロード</button>
         </div>
         <div class="row">
@@ -126,8 +126,6 @@
             <input type="file" id="backupFile" accept="application/json" style="position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;" onchange="importBackup(event)">
           </label>
         </div>
-      </div>
-      <div class="card page-section">
         <h2>バックアップ機能について</h2>
         <h3>1. バックアップとは？</h3>
         <p>
