@@ -13,9 +13,10 @@
       <button class="tab-btn active" onclick="showTab(0)">記録</button>
       <button class="tab-btn" onclick="showTab(1)">管理</button>
       <button class="tab-btn" onclick="showTab(2)">ランキング</button>
-      <button class="tab-btn" onclick="showTab(3)">使い方</button>
-      <button class="tab-btn" onclick="showTab(4)">プライバシーポリシー</button>
-      <button class="tab-btn" onclick="showTab(5)">お問い合わせ</button>
+      <button class="tab-btn" onclick="showTab(3)">バックアップ機能</button>
+      <button class="tab-btn" onclick="showTab(4)">使い方</button>
+      <button class="tab-btn" onclick="showTab(5)">プライバシーポリシー</button>
+      <button class="tab-btn" onclick="showTab(6)">お問い合わせ</button>
     </div>
 
     <!-- 記録タブ -->
@@ -121,6 +122,40 @@
             </select>
           </label>
         </div>        <div id="rankingArea" class="center"></div>
+      </div>
+    </div>
+ 
+    <!-- バックアップタブ -->
+    <div class="tab-content">
+      <div class="card page-section">
+        <h2>バックアップ機能について</h2>
+        <h3>1. バックアップとは？</h3>
+        <p>
+          本アプリでは、入力したデータを「ローカルストレージ」と呼ばれるブラウザ内に保存しています。
+          ローカルストレージのデータは、同じ端末・同じブラウザからのみ利用できます。
+        </p>
+        <p>
+          しかし、万が一ブラウザのキャッシュ削除や端末の故障などでデータが消えてしまうことがあります。
+          そこで、バックアップ機能を使うことで、保存データをパソコンやスマートフォンにファイルとしてダウンロードできます。
+        </p>
+        <h3>2. バックアップの方法</h3>
+        <ol>
+          <li>アプリ内のメニューから「バックアップ」ボタンをクリックします。</li>
+          <li>現在保存されているデータが自動的にファイル（通常は.jsonファイル）としてダウンロードされます。</li>
+          <li>このファイルはパソコンやスマートフォンの任意の場所に保存してください。</li>
+        </ol>
+        <h3>3. 復元（リストア）の方法</h3>
+        <ol>
+          <li>アプリのメニューから「復元」または「バックアップの読み込み」ボタンをクリックします。</li>
+          <li>先ほど保存したバックアップファイル（.jsonなど）を選択します。</li>
+          <li>読み込むことで、過去のデータが復元されます。</li>
+        </ol>
+        <h3>4. 注意点</h3>
+        <ul>
+          <li>バックアップファイルには個人情報や作成データが含まれる場合があります。他人に渡さないようご注意ください。</li>
+          <li>バックアップは定期的に行うことをおすすめします。</li>
+          <li>ローカルストレージのデータは、ブラウザの設定や端末の初期化などで消えることがあります。重要なデータは必ずバックアップしてください。</li>
+        </ul>
       </div>
     </div>
 
