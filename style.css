@@ -174,7 +174,6 @@
     .result-summary li { min-width: 110px; }
     .ranking th, .ranking td { padding:0.3em 0.7em; }
     .center {text-align:center;}
-    .tsum-admin-table td .edit-btn { color: #fff; font-weight: bold; }
     .tsum-admin-table td .delete-btn { color: #e53939; font-weight: bold; }    .tsum-admin-table label {cursor:pointer;}
     .tsum-admin-table input[type=checkbox] { accent-color: #396bdb; }
     .page-section {max-width:630px;margin:0 auto 1.5em auto;font-size:1.09em;line-height:1.95em;overflow-wrap:anywhere;}
