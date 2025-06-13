@@ -79,8 +79,8 @@ function renderTsumList(){
       <td><input type="checkbox" ${t.defaults.time?'checked':''} disabled></td>
       <td><input type="checkbox" ${t.defaults.item54?'checked':''} disabled></td>
       <td><input type="checkbox" ${t.defaults.coin?'checked':''} disabled></td>
-      <td><button onclick="editTsum(${i})">編集</button></td>
-      <td><button onclick="deleteTsum(${i})">削除</button></td>
+      <td><button class="edit-btn" onclick="editTsum(${i})">編集</button></td>
+      <td><button class="delete-btn" onclick="deleteTsum(${i})">削除</button></td>
     `;
     tbody.appendChild(tr);
   });
