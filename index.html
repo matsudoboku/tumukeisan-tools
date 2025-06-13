@@ -202,7 +202,8 @@
       <button class="tab-btn" onclick="showTab(1)">管理</button>
       <button class="tab-btn" onclick="showTab(2)">ランキング</button>
       <button class="tab-btn" onclick="showTab(3)">使い方</button>
-      <button class="tab-btn" onclick="showTab(4)">プライバシーポリシー/お問い合わせ</button>
+      <button class="tab-btn" onclick="showTab(4)">プライバシーポリシー</button>
+      <button class="tab-btn" onclick="showTab(5)">お問い合わせ</button>
     </div>
 
     <!-- 記録タブ -->
@@ -282,6 +283,18 @@
         </div>
         <div id="tsumList"></div>
       </div>
+      <div class="card">
+        <h2 style="font-size:1.13em;">データのバックアップ</h2>
+        <div class="row">
+          <button onclick="exportBackup()" class="btn">バックアップをダウンロード</button>
+        </div>
+        <div class="row">
+          <label class="btn" style="position:relative;overflow:hidden;">
+            復元
+            <input type="file" id="backupFile" accept="application/json" style="position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;" onchange="importBackup(event)">
+          </label>
+        </div>
+      </div>
     </div>
 
     <!-- ランキングタブ -->
@@ -306,12 +319,12 @@
         </ul>
         <p>
           <b>スマートフォンにも対応</b>しているので現場でも片手でご利用いただけます。<br>
-          <b>ご要望・不具合は「プライバシーポリシー/お問い合わせ」タブからご連絡ください。</b>
+          <b>ご要望・不具合は「お問い合わせ」からご連絡ください。</b>
         </p>
       </div>
     </div>
 
-    <!-- プライバシーポリシー・お問い合わせタブ -->
+    <!-- プライバシーポリシータブ -->
     <div class="tab-content">
       <div class="card page-section">
        <h2>プライバシーポリシー</h2>
@@ -332,6 +345,12 @@
           <li>本ツールの利用によるいかなる損害も運営者は責任を負いません。</li>
           <li>機能改善・仕様変更・サービス停止等を予告なく行う場合があります。</li>
         </ul>
+      </div>
+    </div>
+
+    <!-- お問い合わせタブ -->
+    <div class="tab-content">
+      <div class="card page-section">
         <h2>お問い合わせ</h2>
         <p>
           ご意見・ご要望・不具合報告は下記メールまでご連絡ください。<br>
@@ -442,12 +461,54 @@
     function savePlays(){
       localStorage.setItem('tsumPlays', JSON.stringify(plays));
     }
-    function resetPlays(){
+  function resetPlays(){
       if(confirm("すべての記録を削除します。よろしいですか？")){
         plays.length = 0;
         savePlays();
         updateTable();
       }
+    }
+
+    function exportBackup(){
+      const data = {tsumData, plays, selectedTsum};
+      const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'tsum_backup.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importBackup(event){
+      const file = event.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try{
+          const data = JSON.parse(reader.result);
+          if(Array.isArray(data.tsumData)){
+            tsumData = data.tsumData;
+            saveTsums();
+          }
+          if(Array.isArray(data.plays)){
+            plays.length = 0;
+            plays.push(...data.plays);
+            savePlays();
+          }
+          if(data.selectedTsum !== undefined){
+            selectedTsum = String(data.selectedTsum);
+            localStorage.setItem('selectedTsum', selectedTsum);
+          }
+          renderTsumList();
+          renderTsumSelect();
+          updateTable();
+          alert('復元しました');
+        }catch(e){
+          alert('ファイルが不正です');
+        }
+      };
+      reader.readAsText(file);
     }
 
     // ストップウォッチ用変数
