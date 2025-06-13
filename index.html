@@ -46,6 +46,7 @@
       transition: background 0.2s, color 0.2s;
       white-space:nowrap;
     }
+    .tabs button:last-child { min-width: 200px; }
     .tab-btn.active {
       background: #fff;
       color: #1839aa;
@@ -187,7 +188,7 @@
       .stopwatch {flex-direction:column;}
       .play-list table, .ranking table, .tsum-admin-table {font-size:0.91em;}
       .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:nowrap;line-height:1.2em;}
-      .tabs button:last-child{min-width:160px;}
+      .tabs button:last-child{min-width:200px;}
       .ranking th, .ranking td{font-size:0.85em;min-width:auto;padding:0.35em 0.25em;}
   　　 .tab-btn{padding:0.6em 0.8em;font-size:0.9em;white-space:normal;line-height:1.2em;}
     }
@@ -217,25 +218,25 @@
           <span id="playCountInfo" style="font-size:0.99em; color:#355;">（記録件数：<span id="playCount">0</span>）</span>
         </div>
         <div id="result" class="result-summary"></div>
-        <div class="row">
+        <div id="inputRow" class="row">
           <label>入力方法:
             <select id="inputMode" onchange="switchInputMode(this.value)" style="width:120px;">
               <option value="stopwatch">ストップウォッチ</option>
               <option value="manual">手入力</option>
             </select>
           </label>
-        </div>
-        <div id="stopwatchRow" class="stopwatch row">
-          <button id="toggleBtn" class="btn" onclick="togglePlay()">スタート</button>
-          <span id="timer" class="timer-display">00:00.0</span>
-        </div>
-        <div id="manualRow" class="row" style="display:none;">
-          <label>分:
-            <input type="number" id="manualMin" value="" min="0" style="width:60px;">
-          </label>
-          <label>秒:
-            <input type="number" id="manualSec" value="" min="0" max="59" style="width:60px;">
-          </label>
+          <div id="stopwatchRow" class="stopwatch row">
+            <button id="toggleBtn" class="btn" onclick="togglePlay()">スタート</button>
+            <span id="timer" class="timer-display">00:00.0</span>
+          </div>
+          <div id="manualRow" class="row" style="display:none;">
+            <label>分:
+              <input type="number" id="manualMin" value="" min="0" style="width:60px;">
+            </label>
+            <label>秒:
+              <input type="number" id="manualSec" value="" min="0" max="59" style="width:60px;">
+            </label>
+          </div>
         </div>
         <div class="row">
           <label>今回コイン数:
