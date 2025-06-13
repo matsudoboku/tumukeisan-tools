@@ -42,6 +42,10 @@ function formatElapsed(ms){
   return `${m}:${s}.${t}`;
 }
 
+function formatNumber(num, decimals=0){
+  return Number(num).toLocaleString(undefined, {minimumFractionDigits:decimals, maximumFractionDigits:decimals});
+}
+
 function renderTsumOptions(){
   const select = $('tsumSelect');
   select.innerHTML = '';
@@ -85,18 +89,25 @@ function renderRanking(){
   const area = $('rankingArea');
   area.innerHTML = '';
   if(!data.tsums.length) return;
+  const typeEl = $('rankingType');
+  const type = typeEl ? typeEl.value : 'efficiency';
   const rows = data.tsums.map(t => {
-    const {totalCoins, totalTime} = summarize(t.plays);
-    const perMin = totalTime ? totalCoins / (totalTime/60) : 0;
-    return { tsum:t, perMin, per30: perMin*30, total: totalCoins };
-  }).sort((a,b)=>b.perMin - a.perMin);
+  const { totalCoins, totalTime } = summarize(t.plays);
+  const count = t.plays.length;    const perMin = totalTime ? totalCoins / (totalTime/60) : 0;
+    const per30 = perMin * 30;
+    const perHour = perMin * 60;
+    const avgCoins = count ? totalCoins / count : 0;
+    return { tsum:t, perMin, per30, perHour, avgCoins, count };
+  });
+  if(type === 'average'){ rows.sort((a,b)=>b.avgCoins - a.avgCoins); }
+  else { rows.sort((a,b)=>b.perMin - a.perMin); }
   const table = document.createElement('table');
   table.className = 'ranking';
-  table.innerHTML = '<thead><tr><th>ツム名</th><th>効率(/分)</th><th>効率(30分)</th><th>合計</th></tr></thead>';
+  table.innerHTML = '<thead><tr><th>ツム名</th><th>効率(/分)</th><th>効率(30分)</th><th>効率(/時)</th><th>平均コイン</th><th>回数</th></tr></thead>';
   const tbody = document.createElement('tbody');
   rows.forEach(r=>{
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escapeHtml(r.tsum.name)}</td><td>${r.perMin.toFixed(1)}</td><td>${r.per30.toFixed(1)}</td><td>${r.total}</td>`;
+    tr.innerHTML = `<td>${escapeHtml(r.tsum.name)}</td><td>${formatNumber(r.perMin,1)}</td><td>${formatNumber(r.per30,1)}</td><td>${formatNumber(r.perHour,1)}</td><td>${formatNumber(r.avgCoins,1)}</td><td>${formatNumber(r.count)}</td>`;
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
@@ -111,7 +122,7 @@ function renderPlays(){
   tsum.plays.forEach((p,i)=>{
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${p.coins}</td>
+      <td>${formatNumber(p.coins)}</td>
       <td>${p.items.time?'✓':''}</td>
       <td>${p.items.item54?'✓':''}</td>
       <td>${p.items.coin?'✓':''}</td>
@@ -119,7 +130,7 @@ function renderPlays(){
       <td><button onclick="deletePlay(${i})">X</button></td>`;
     tbody.appendChild(tr);
   });
-  $('playCount').textContent = tsum.plays.length;
+  $('playCount').textContent = formatNumber(tsum.plays.length);
   updateResultSummary();
 }
 
@@ -154,14 +165,14 @@ function updateResultSummary(){
   const coinRank = avgCoinList.findIndex(r => r.tsum === tsum) + 1;
 
   const items = [
-    `記録数: ${count}`,
+    `記録数: ${formatNumber(count)}`,
     `平均時間: ${formatTime(avgTime)}`,
-    `平均コイン: ${avgCoins.toFixed(1)}`,
-    `効率(/分): ${perMin.toFixed(1)}`,
-    `効率(30分): ${per30.toFixed(1)}`,
-    `効率(/時): ${perHour.toFixed(1)}`,
-    `効率ランク: ${effRank}/${effRankList.length}`,
-    `平均コインランク: ${coinRank}/${avgCoinList.length}`
+    `平均コイン: ${formatNumber(avgCoins,1)}`,
+    `効率(/分): ${formatNumber(perMin,1)}`,
+    `効率(30分): ${formatNumber(per30,1)}`,
+    `効率(/時): ${formatNumber(perHour,1)}`,
+    `効率ランク: ${formatNumber(effRank)}/${formatNumber(effRankList.length)}`,
+    `平均コインランク: ${formatNumber(coinRank)}/${formatNumber(avgCoinList.length)}`
   ];
   items.forEach(text => {
     const li = document.createElement('li');
