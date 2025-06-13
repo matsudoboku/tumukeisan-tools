@@ -4,6 +4,7 @@ let currentIndex = -1;
 let timerInterval = null;
 let startTime = 0;
 let elapsedMs = 0;
+let editIndex = -1; // index of tsum being edited
 
 function $(id){ return document.getElementById(id); }
 
@@ -69,7 +70,7 @@ function renderTsumList(){
   if(!data.tsums.length) return;
   const table = document.createElement('table');
   table.className = 'tsum-admin-table';
-  table.innerHTML = '<thead><tr><th>ツム名</th><th>タイム</th><th>5→4</th><th>コイン</th><th>削除</th></tr></thead>';
+  table.innerHTML = '<thead><tr><th>ツム名</th><th>タイム</th><th>5→4</th><th>コイン</th><th>編集</th><th>削除</th></tr></thead>';
   const tbody = document.createElement('tbody');
   data.tsums.forEach((t,i)=>{
     const tr = document.createElement('tr');
@@ -79,6 +80,7 @@ function renderTsumList(){
       <td><input type="checkbox" ${t.defaults.item54?'checked':''} disabled></td>
       <td><input type="checkbox" ${t.defaults.coin?'checked':''} disabled></td>
       <td><button onclick="deleteTsum(${i})">削除</button></td>`;
+      <td><button onclick="editTsum(${i})">編集</button></td>
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
@@ -191,33 +193,61 @@ function renderAll(){
 function addTsum(){
   const name = $('tsumInput').value.trim();
   if(!name) return;
-  const tsum = {
-    name,
-    defaults:{
-      time:$('setTime').checked,
-      item54:$('set54').checked,
-      coin:$('setCoin').checked
-    },
-    plays:[]
+  const defaults = {
+    time: $('setTime').checked,
+    item54: $('set54').checked,
+    coin: $('setCoin').checked
   };
-  data.tsums.push(tsum);
+  if(editIndex >= 0){
+    const tsum = data.tsums[editIndex];
+    tsum.name = name;
+    tsum.defaults = defaults;
+    editIndex = -1;
+    $('addTsumBtn').textContent = '追加';
+  } else {
+    const tsum = { name, defaults, plays: [] };
+    data.tsums.push(tsum);
+    currentIndex = data.tsums.length-1;
+  }
   saveData();
   $('tsumInput').value='';
   $('setTime').checked = $('set54').checked = $('setCoin').checked = false;
-  currentIndex = data.tsums.length-1;
   renderAll();
+}
+
+function editTsum(idx){
+  const tsum = data.tsums[idx];
+  $('tsumInput').value = tsum.name;
+  $('setTime').checked = tsum.defaults.time;
+  $('set54').checked = tsum.defaults.item54;
+  $('setCoin').checked = tsum.defaults.coin;
+  $('addTsumBtn').textContent = '更新';
+  editIndex = idx;
+  showTab(1);
 }
 
 function deleteTsum(idx){
   if(!confirm('削除しますか?')) return;
   data.tsums.splice(idx,1);
   if(currentIndex>=data.tsums.length) currentIndex = data.tsums.length-1;
+    if(editIndex === idx){
+    editIndex = -1;
+    $('addTsumBtn').textContent = '追加';
+    $('tsumInput').value = '';
+    $('setTime').checked = $('set54').checked = $('setCoin').checked = false;
+  } else if(editIndex > idx){
+    editIndex--;
+  }
   saveData();
   renderAll();
 }
 
 function onSelectTsum(){
   currentIndex = parseInt($('tsumSelect').value,10) || 0;
+  const tsum = data.tsums[currentIndex];
+  $('itemTime').checked = tsum.defaults.time;
+  $('item54').checked = tsum.defaults.item54;
+  $('itemCoin').checked = tsum.defaults.coin;
   renderPlays();
 }
 
