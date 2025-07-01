@@ -198,3 +198,21 @@
       .ranking th, .ranking td{font-size:0.85em;min-width:auto;padding:0.35em 0.25em;}
       .tab-btn{padding:0.6em 1em;font-size:0.9em;white-space:nowrap;line-height:1.2em;}      .result-summary li{min-width:auto;}    }
       .result-summary li{min-width:auto;}    }
+dialog::backdrop {
+  background: rgba(0,0,0,0.4);
+}
+dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 1em 1.2em;
+}
+.notice-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+.notice-form label {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
