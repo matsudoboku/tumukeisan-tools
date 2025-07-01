@@ -9,6 +9,7 @@ let timerInterval = null;
 let startTime = 0;
 let elapsedMs = 0;
 let editIndex = -1; // index of tsum being edited
+const TEST_NOTICE_KEY = 'tmt-test-notice-shown';
 
 function $(id){ return document.getElementById(id); }
 
