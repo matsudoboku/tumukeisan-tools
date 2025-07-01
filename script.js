@@ -425,13 +425,29 @@ function importBackup(event){
   reader.readAsText(file);
 }
 
-function init(){
-  loadData();
+function showTestNotice(){
+  if(localStorage.getItem(TEST_NOTICE_KEY)) return;
+  const dialog = document.getElementById('testNotice');
+  const checkbox = document.getElementById('testNoticeCheck');
+  const okBtn = document.getElementById('testNoticeOk');
+  checkbox.checked = false;
+  okBtn.disabled = true;
+  checkbox.addEventListener('change', ()=>{
+    okBtn.disabled = !checkbox.checked;
+  });
+  dialog.showModal();
+  okBtn.addEventListener('click', ()=>{
+    localStorage.setItem(TEST_NOTICE_KEY, '1');
+    dialog.close();
+  });
+}
+
 async function init(){
   await loadData();
   renderAll();
   switchInputMode('stopwatch');
   if(data.tsums.length>0) onSelectTsum();
+  showTestNotice();
 }
 
 window.addEventListener('DOMContentLoaded', init);
