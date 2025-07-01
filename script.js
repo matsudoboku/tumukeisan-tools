@@ -1,4 +1,8 @@
 const STORAGE_KEY = 'tmt-data';
+const DB_NAME = 'tmt-db';
+const STORE_NAME = 'data';
+let db = null;
+
 let data = { tsums: [] };
 let currentIndex = -1;
 let timerInterval = null;
@@ -8,15 +12,55 @@ let editIndex = -1; // index of tsum being edited
 
 function $(id){ return document.getElementById(id); }
 
-function loadData(){
-  const saved = localStorage.getItem(STORAGE_KEY);
+function openDb(){
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if(!db.objectStoreNames.contains(STORE_NAME)){
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getDb(){
+  if(db) return db;
+  db = await openDb();
+  return db;
+}
+
+async function loadData(){
+  try{
+    const db = await getDb();
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.get(STORAGE_KEY);
+    const result = await new Promise(resolve=>{
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(null);
+    });
+    if(result){
+      data = result;
+      return;
+    }
+  }catch(e){ }  const saved = localStorage.getItem(STORAGE_KEY);
   if(saved){
     try{ data = JSON.parse(saved); }catch(e){ data = { tsums: [] }; }
   }
+  await saveData();
 }
 
 function saveData(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  const json = JSON.stringify(data);
+  localStorage.setItem(STORAGE_KEY, json);
+  getDb().then(db => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(data, STORAGE_KEY);
+  });
 }
 
 function escapeHtml(str){
@@ -382,6 +426,8 @@ function importBackup(event){
 
 function init(){
   loadData();
+async function init(){
+  await loadData();
   renderAll();
   switchInputMode('stopwatch');
   if(data.tsums.length>0) onSelectTsum();
