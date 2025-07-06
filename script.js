@@ -11,6 +11,10 @@ let elapsedMs = 0;
 let editIndex = -1; // index of tsum being edited
 const TEST_NOTICE_KEY = 'tmt-test-notice-shown';
 
+const ITEM_COST_TIME = 1000;
+const ITEM_COST_54 = 1800;
+const ITEM_COST_COIN = 500;
+
 function $(id){ return document.getElementById(id); }
 
 function openDb(){
@@ -68,15 +72,26 @@ function escapeHtml(str){
   return str.replace(/[&"<>]/g, c => ({'&':'&amp;','"':'&quot;','<':'&lt;','>':'&gt;'}[c]));
 }
 
-function summarize(plays){
-  let totalCoins = 0, totalTime = 0, totalItems = 0;
+function playNetCoins(p, rate){
+  let cost = 0;
+  if(p.items && p.items.time) cost += ITEM_COST_TIME;
+  if(p.items && p.items.item54) cost += ITEM_COST_54;
+  if(p.items && p.items.coin) cost += ITEM_COST_COIN;
+  const mult = p.items && p.items.coin ? rate : 1;
+  return (p.coins - cost) * mult;
+}
+
+function summarize(plays, rate){
+  let totalCoins = 0, totalTime = 0, totalItems = 0, totalNetCoins = 0;
   plays.forEach(p => {
     totalCoins += p.coins;
     totalTime += p.timeSec;
-    if(p.items && p.items.time) totalItems += 1000;   // +time item cost
-    if(p.items && p.items.item54) totalItems += 1800; // 5→4 item cost
+    if(p.items && p.items.time) totalItems += ITEM_COST_TIME;
+    if(p.items && p.items.item54) totalItems += ITEM_COST_54;
+    if(p.items && p.items.coin) totalItems += ITEM_COST_COIN;
+    totalNetCoins += playNetCoins(p, rate);
   });
-  return { totalCoins, totalTime, totalItems };
+  return { totalCoins, totalTime, totalItems, totalNetCoins };
 }
 
 function formatTime(sec){
@@ -143,13 +158,13 @@ function renderRanking(){
   if(!data.tsums.length) return;
   const typeEl = $('rankingType');
   const type = typeEl ? typeEl.value : 'efficiency';
+  const rate = parseFloat($("itemRate").value) || 1;
   const rows = data.tsums.map(t => {
-    const { totalCoins, totalTime, totalItems } = summarize(t.plays);
-  　const count = t.plays.length;
-    const rate = parseFloat($("itemRate").value) || 1;
-    // 1分効率 = (獲得コイン数 - アイテム使用金額) × コイン倍率 ÷ プレイ時間(分)
-    const perMin = totalTime ? ((totalCoins - totalItems) * rate) / (totalTime/60) : 0;    const perHour = perMin * 60;
-    const avgCoins = count ? totalCoins / count : 0;
+    const { totalTime, totalNetCoins } = summarize(t.plays, rate);
+    const count = t.plays.length;
+    const perMin = totalTime ? (totalNetCoins) / (totalTime/60) : 0;
+    const perHour = perMin * 60;
+    const avgCoins = count ? totalNetCoins / count : 0;
     const avgTime = count ? totalTime / count : 0;
     return { tsum:t, perMin, perHour, avgCoins, avgTime, count };
   });
@@ -193,26 +208,26 @@ function updateResultSummary(){
   if(currentIndex < 0) return;
   const tsum = data.tsums[currentIndex];
   const count = tsum.plays.length;
-  const { totalCoins, totalTime, totalItems } = summarize(tsum.plays);
-  if(count === 0 || totalTime === 0) return;
+  const rate = parseFloat($("itemRate").value) || 1;
+  const { totalNetCoins, totalTime } = summarize(tsum.plays, rate);  if(count === 0 || totalTime === 0) return;
 
   const avgTime = totalTime / count;
   const rate = parseFloat($("itemRate").value) || 1;
   const perMin = totalTime ? ((totalCoins - totalItems) * rate) / (totalTime / 60) : 0;
   const perHour = perMin * 60;
-  const avgCoins = totalCoins / count;
-
+  const avgCoins = totalNetCoins / count;
+  
   const effRankList = data.tsums.map(t => {
-    const { totalCoins, totalTime } = summarize(t.plays);
-    const pm = totalTime ? totalCoins / (totalTime / 60) : 0;
+    const { totalNetCoins, totalTime } = summarize(t.plays, rate);
+    const pm = totalTime ? totalNetCoins / (totalTime / 60) : 0;
     return { tsum: t, perMin: pm };
   }).sort((a,b) => b.perMin - a.perMin);
   const effRank = effRankList.findIndex(r => r.tsum === tsum) + 1;
 
   const avgCoinList = data.tsums.map(t => {
-    const { totalCoins } = summarize(t.plays);
+    const { totalNetCoins } = summarize(t.plays, rate);
     const c = t.plays.length;
-    const avg = c ? totalCoins / c : 0;
+    const avg = c ? totalNetCoins / c : 0;
     return { tsum: t, avgCoins: avg };
   }).sort((a,b) => b.avgCoins - a.avgCoins);
   const coinRank = avgCoinList.findIndex(r => r.tsum === tsum) + 1;
