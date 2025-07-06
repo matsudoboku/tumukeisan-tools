@@ -109,7 +109,7 @@ function formatElapsed(ms){
 }
 
 function formatNumber(num){
-  return Math.floor(num).toLocaleString();
+  return Number(num).toLocaleString(undefined, { maximumFractionDigits: 1 });
 }
 
 function renderTsumOptions(){
