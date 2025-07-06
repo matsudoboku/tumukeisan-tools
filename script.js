@@ -109,8 +109,9 @@ function formatElapsed(ms){
 }
 
 function formatNumber(num){
-  return Number(num).toLocaleString(undefined, { maximumFractionDigits: 1 });
+  return Number(num).toLocaleString(undefined, { maximumFractionDigits: 1, minimumFractionDigits: 1 });
 }
+
 
 function renderTsumOptions(){
   const select = $('tsumSelect');
