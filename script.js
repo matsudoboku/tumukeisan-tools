@@ -108,8 +108,8 @@ function formatElapsed(ms){
   return `${m}:${s}.${t}`;
 }
 
-function formatNumber(num){
-  return Number(num).toLocaleString(undefined, { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+function formatNumber(num) {
+  return num.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 }
 
 
@@ -213,9 +213,9 @@ function updateResultSummary(){
   const { totalNetCoins, totalTime } = summarize(tsum.plays, rate);
   if(count === 0 || totalTime === 0) return;
   
-  const avgTime = totalTime / count;
-  const perMin = totalNetCoins / (totalTime / 60);
-  const perHour = perMin * 60;
+　const perMinRaw = totalNetCoins / (totalTime / 60);
+　const perHourRaw = totalNetCoins / (totalTime / 60) * 60;
+　const avgCoins = totalNetCoins / count;
   const avgCoins = totalNetCoins / count;
   
   const effRankList = data.tsums.map(t => {
