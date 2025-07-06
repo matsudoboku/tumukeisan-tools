@@ -69,9 +69,14 @@ function escapeHtml(str){
 }
 
 function summarize(plays){
-  let totalCoins = 0, totalTime = 0;
-  plays.forEach(p => { totalCoins += p.coins; totalTime += p.timeSec; });
-  return { totalCoins, totalTime };
+  let totalCoins = 0, totalTime = 0, totalItems = 0;
+  plays.forEach(p => {
+    totalCoins += p.coins;
+    totalTime += p.timeSec;
+    if(p.items && p.items.time) totalItems += 1000;   // +time item cost
+    if(p.items && p.items.item54) totalItems += 1800; // 5→4 item cost
+  });
+  return { totalCoins, totalTime, totalItems };
 }
 
 function formatTime(sec){
@@ -139,10 +144,11 @@ function renderRanking(){
   const typeEl = $('rankingType');
   const type = typeEl ? typeEl.value : 'efficiency';
   const rows = data.tsums.map(t => {
-    const { totalCoins, totalTime } = summarize(t.plays);
-    const count = t.plays.length;
-    const perMin = totalTime ? totalCoins / (totalTime/60) : 0;
-    const perHour = perMin * 60;
+    const { totalCoins, totalTime, totalItems } = summarize(t.plays);
+  　const count = t.plays.length;
+    const rate = parseFloat($("itemRate").value) || 1;
+    // 1分効率 = (獲得コイン数 - アイテム使用金額) × コイン倍率 ÷ プレイ時間(分)
+    const perMin = totalTime ? ((totalCoins - totalItems) * rate) / (totalTime/60) : 0;    const perHour = perMin * 60;
     const avgCoins = count ? totalCoins / count : 0;
     const avgTime = count ? totalTime / count : 0;
     return { tsum:t, perMin, perHour, avgCoins, avgTime, count };
@@ -187,11 +193,12 @@ function updateResultSummary(){
   if(currentIndex < 0) return;
   const tsum = data.tsums[currentIndex];
   const count = tsum.plays.length;
-  const { totalCoins, totalTime } = summarize(tsum.plays);
+  const { totalCoins, totalTime, totalItems } = summarize(tsum.plays);
   if(count === 0 || totalTime === 0) return;
 
   const avgTime = totalTime / count;
-  const perMin = totalCoins / (totalTime / 60);
+    const { totalCoins, totalTime, totalItems } = summarize(t.plays);
+    const pm = totalTime ? ((totalCoins - totalItems) * rate) / (totalTime / 60) : 0;
   const per30 = perMin * 30;
   const perHour = perMin * 60;
   const avgCoins = totalCoins / count;
