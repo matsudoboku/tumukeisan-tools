@@ -77,8 +77,8 @@ function playNetCoins(p, rate){
   if(p.items && p.items.time) cost += ITEM_COST_TIME;
   if(p.items && p.items.item54) cost += ITEM_COST_54;
   if(p.items && p.items.coin) cost += ITEM_COST_COIN;
-  const mult = p.items && p.items.coin ? rate : 1;
-  return (p.coins - cost) * mult;
+  // **常に倍率(rate)をかける**
+  return (p.coins * rate) - cost;
 }
 
 function summarize(plays, rate){
@@ -213,8 +213,8 @@ function updateResultSummary(){
 
   const avgTime = totalTime / count;
   const rate = parseFloat($("itemRate").value) || 1;
-  const perMin = totalTime ? ((totalCoins - totalItems) * rate) / (totalTime / 60) : 0;
-  const perHour = perMin * 60;
+　const perMin = totalTime ? totalNetCoins / (totalTime / 60) : 0;
+　const perHour = perMin * 60;
   const avgCoins = totalNetCoins / count;
   
   const effRankList = data.tsums.map(t => {
