@@ -197,9 +197,8 @@ function updateResultSummary(){
   if(count === 0 || totalTime === 0) return;
 
   const avgTime = totalTime / count;
-    const { totalCoins, totalTime, totalItems } = summarize(t.plays);
-    const pm = totalTime ? ((totalCoins - totalItems) * rate) / (totalTime / 60) : 0;
-  const per30 = perMin * 30;
+  const rate = parseFloat($("itemRate").value) || 1;
+  const perMin = totalTime ? ((totalCoins - totalItems) * rate) / (totalTime / 60) : 0;
   const perHour = perMin * 60;
   const avgCoins = totalCoins / count;
 
