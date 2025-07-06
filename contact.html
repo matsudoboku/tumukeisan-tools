@@ -5,6 +5,10 @@
   <title>お問い合わせ - ツムツム効率計算</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#396bdb">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
 <h1>お問い合わせ</h1>
@@ -13,5 +17,12 @@
   <p><a class="contact-link" href="https://x.com/messages/compose?recipient_id=1083938535449583616" target="_blank" rel="noopener noreferrer">X（旧Twitter）でDMする</a></p>
   <p style="margin-top:1.5em;"><a href="index.html" class="btn">戻る</a></p>
 </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
 </body>
 </html>
