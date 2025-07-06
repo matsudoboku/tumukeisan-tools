@@ -213,10 +213,11 @@ function updateResultSummary(){
   const { totalNetCoins, totalTime } = summarize(tsum.plays, rate);
   if(count === 0 || totalTime === 0) return;
   
-　const perMinRaw = totalNetCoins / (totalTime / 60);
-　const perHourRaw = totalNetCoins / (totalTime / 60) * 60;
-　const avgCoins = totalNetCoins / count;
+
+  const perMin = totalNetCoins / (totalTime / 60);
+  const perHour = perMin * 60;
   const avgCoins = totalNetCoins / count;
+  const avgTime = totalTime / count;
   
   const effRankList = data.tsums.map(t => {
     const { totalNetCoins, totalTime } = summarize(t.plays, rate);
