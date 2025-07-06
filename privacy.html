@@ -5,6 +5,10 @@
   <title>プライバシーポリシー - ツムツム効率計算</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#396bdb">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
 <h1>プライバシーポリシー</h1>
@@ -27,5 +31,12 @@
   </ul>
   <p style="text-align:center;"><a href="index.html" class="btn">戻る</a></p>
 </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
 </body>
 </html>
