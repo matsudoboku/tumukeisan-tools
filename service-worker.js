@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tmt-cache-v2';
+const CACHE_NAME = 'tmt-cache-v3';
 const URLS = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const URLS = [
 ];
 
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(URLS))
   );
