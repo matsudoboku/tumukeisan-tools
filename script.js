@@ -78,7 +78,10 @@ function playNetCoins(p, rate){
   if(p.items && p.items.item54) cost += ITEM_COST_54;
   if(p.items && p.items.coin) cost += ITEM_COST_COIN;
   // **常に倍率(rate)をかける**
-  return (p.coins * rate) - cost;
+  if (p.items && p.items.coin) {
+    return (p.coins * rate) - cost;
+  } else {
+    return p.coins - cost;
 }
 
 function summarize(plays, rate){
