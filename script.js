@@ -59,7 +59,6 @@ async function loadData(){
 }
 
 function saveData(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   const json = JSON.stringify(data);
   localStorage.setItem(STORAGE_KEY, json);
   getDb().then(db => {
