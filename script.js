@@ -82,6 +82,7 @@ function playNetCoins(p, rate){
     return (p.coins * rate) - cost;
   } else {
     return p.coins - cost;
+  }
 }
 
 function summarize(plays, rate){
