@@ -23,10 +23,8 @@ self.addEventListener('activate', event => {
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
-  // Take control immediately so refreshed assets are used
   return self.clients.claim();
 });
-
 
 self.addEventListener('fetch', event => {
   event.respondWith(
