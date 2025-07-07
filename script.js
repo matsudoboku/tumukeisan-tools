@@ -377,7 +377,6 @@ function addPlay(){
     timeSec
   });
   $('coinInput').value=0;
-  $('itemTime').checked = $('item54').checked = $('itemCoin').checked = false;
   saveData();
   renderPlays();
   renderRanking();
