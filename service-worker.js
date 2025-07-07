@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tmt-cache-v1';
+const CACHE_NAME = 'tmt-cache-v2';
 const URLS = [
   './',
   './index.html',
@@ -16,6 +16,17 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME).then(cache => cache.addAll(URLS))
   );
 });
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
+  );
+  // Take control immediately so refreshed assets are used
+  return self.clients.claim();
+});
+
 
 self.addEventListener('fetch', event => {
   event.respondWith(
