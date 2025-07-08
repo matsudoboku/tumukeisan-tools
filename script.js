@@ -377,6 +377,9 @@ function addPlay(){
     timeSec
   });
   $('coinInput').value=0;
+  $('itemTime').checked = tsum.defaults.time;
+  $('item54').checked = tsum.defaults.item54;
+  $('itemCoin').checked = tsum.defaults.coin;
   saveData();
   renderPlays();
   renderRanking();
